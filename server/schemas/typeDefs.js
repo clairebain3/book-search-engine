@@ -4,12 +4,12 @@ const typeDefs = `#graphql
     username: String!
     email: String!
     bookCount: Int
-    savedBooks: [Book]
+    savedBooks: [Book]!
 
   }
 
   input SaveBookInput {
-    authors: String! array
+    authors: [String]
     description: String!
     title: String!
     image: String!
@@ -18,7 +18,7 @@ const typeDefs = `#graphql
 
   type Book {
     bookId: String!
-    authors: String! array
+    authors: [String] 
     description: String!
     title: String!
     image: String!
@@ -31,7 +31,7 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    me: [User]
+    me(userId: ID!): User
   }
 
   type Mutation {
