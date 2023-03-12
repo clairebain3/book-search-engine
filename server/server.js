@@ -1,8 +1,3 @@
-
-// const path = require('path');
-// const db = require('./config/connection');
-// const routes = require('./routes');
-
 const express = require("express");
 // Import the ApolloServer class
 const { ApolloServer } = require("@apollo/server");
@@ -58,4 +53,3 @@ const startApolloServer = async (typeDefs, resolvers) => {
 
 // Call the async function to start the server
 startApolloServer(typeDefs, resolvers);
-
