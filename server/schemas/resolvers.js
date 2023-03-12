@@ -6,7 +6,7 @@ const resolvers = {
   Query: {
 
     me: async (parent, { userId }) => {
-      return User.findOne({ _id: UserId });
+      return User.findOne({ _id: userId });
     },
   },
 
@@ -44,11 +44,11 @@ const resolvers = {
       },
 
 
-    saveBook: async (parent, { saveBookInput }) => {
+    saveBook: async (parent, { authors, description, title, bookId, image, link }) => {
       return User.findOneAndUpdate(
         { _id: User.__id },
         {
-          $addToSet: { savedBooks:  { saveBookInput } },
+          $addToSet: { savedBooks:  { authors, description, title, bookId, image, link } },
         },
         {
           new: true,

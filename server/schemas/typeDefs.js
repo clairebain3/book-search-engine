@@ -38,7 +38,7 @@ const typeDefs = `#graphql
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
-    saveBook(book: SaveBookInput): User
+    saveBook(authors: [String], description: String!, title: String!, image: String!, link: String!, bookId: String!): User
     deleteBook(bookId: String!): User
   }
 `;
