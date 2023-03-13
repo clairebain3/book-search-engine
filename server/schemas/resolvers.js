@@ -44,9 +44,9 @@ const resolvers = {
       },
 
 
-    saveBook: async (parent, { authors, description, title, bookId, image, link }) => {
+    saveBook: async (parent, { authors, description, title, bookId, image, link, userId }) => {
       return User.findOneAndUpdate(
-        { _id: User.__id },
+        { _id: userId },
         {
           $addToSet: { savedBooks:  { authors, description, title, bookId, image, link } },
         },

@@ -65,34 +65,41 @@ const SearchBooks = () => {
   };
 
   // create function to handle saving a book to our database
-  const handleSaveBook = async (bookId) => {
+  const handleSaveBook = (bookId) => {
 
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-
+    const id = Auth.getProfile();
+    const userId = id.data._id;
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-    console.log(bookToSave)
+    // console.log(myId)
     if (!token) {
       return false;
     }
-
-    try {
-      const response = await saveBook({
-
-        variables: {...bookToSave},
-      });
-
-      // if (!response.ok) {
-      //   throw new Error('something went wrong!');
-      // }
-
-      // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
-    } catch (err) {
-      console.error(err);
-    }
+    saveBook({
+      variables: {userId, ...bookToSave},
+    });
   };
+
+  //   try {
+  //     const response = await saveBook({
+
+  //       variables: {userId, ...bookToSave},
+  //     });
+
+  //     if (!response.ok) {
+  //       console.log(response)
+  //       throw new Error("something went wrong");
+
+  //     }
+
+  //     // if book successfully saves to user's account, save book id to state
+  //     setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   return (
     <>
