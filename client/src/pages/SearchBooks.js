@@ -77,9 +77,13 @@ const SearchBooks = () => {
     if (!token) {
       return false;
     }
+    setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     saveBook({
       variables: {userId, ...bookToSave},
+
+
     });
+    if (error) return `Submission error! ${error.message}`
   };
 
   //   try {

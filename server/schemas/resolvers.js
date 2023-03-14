@@ -5,9 +5,14 @@ const { signToken } = require('../utils/auth');
 const resolvers = {
   Query: {
 
-    me: async (parent, { userId }) => {
-      return User.findOne({ _id: userId });
+    me: async (parent, { user }) => {
+      console.log("findme", user)
+      const myuser = await User.findById( user );
+      return myuser
     },
+    allUsers: async () => {
+      return User.find({})
+    }
   },
 
   Mutation: {

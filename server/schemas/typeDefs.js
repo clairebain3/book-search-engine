@@ -5,7 +5,7 @@ const typeDefs = `#graphql
     email: String
     password: String
     bookCount: Int
-    savedBooks: [Book]!
+    savedBooks: [Book]
 
   }
 
@@ -32,7 +32,8 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    me(userId: ID!): User
+    me(user: ID): User
+    allUsers: [User]
   }
 
   type Mutation {
