@@ -32,7 +32,7 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    me(user: ID): User
+    me(userId: ID!): User
     allUsers: [User]
   }
 

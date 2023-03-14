@@ -1,13 +1,14 @@
 const { AuthenticationError } = require('apollo-server-express');
+const { useRevalidator } = require('react-router-dom');
 const { User } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
 
-    me: async (parent, { user }) => {
-      console.log("findme", user)
-      const myuser = await User.findById( user );
+    me: async (parent, { userId }) => {
+      console.log("findme", userId)
+      const myuser = await User.findById( userId );
       return myuser
     },
     allUsers: async () => {
