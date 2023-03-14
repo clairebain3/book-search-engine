@@ -62,8 +62,14 @@ const resolvers = {
         }
       );
     },
-    deleteBook: async (parent, { bookId }) => {
-      return Book.findOneAndDelete({ _id: bookId });
+    deleteBook: async (parent, { bookId, userId}) => {
+      return User.findOneAndUpdate(
+        { _id: userId },
+        {
+          $pull: { savedBooks:  { bookId } },
+        }
+        
+        );
     },
 
   },

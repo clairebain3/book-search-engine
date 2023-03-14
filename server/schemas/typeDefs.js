@@ -40,7 +40,7 @@ const typeDefs = `#graphql
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
     saveBook(authors: [String], description: String!, title: String!, image: String!, link: String!, bookId: String!, userId: ID!): User
-    deleteBook(bookId: String!): User
+    deleteBook(bookId: String!, userId: ID!): User
   }
 `;
 

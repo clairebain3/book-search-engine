@@ -1,25 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
-import {deleteBook } from '../utils/API';
+import { REMOVE_BOOK } from '../utils/mutations';
+// import {deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
-import { removeBookId } from '../utils/localStorage';
+import { removeBookId, getSavedBookIds } from '../utils/localStorage';
 import { useRevalidator } from 'react-router-dom';
 // import { token } from 'graphql';
 
 
 const SavedBooks = () => {
-
+  const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds);
+  const [removeBook, { err, d }] = useMutation(REMOVE_BOOK);
   const id = Auth.getProfile();
   const userId = id.data._id;
   console.log(userId)
+  useEffect(() => {
+    return () => getSavedBookIds(savedBookIds);
+  });
   const { loading, error, data } = useQuery(GET_ME,
     {
       variables: { userId },
     });
-
-  const userData = data?.me.savedBooks || {};
+    const userData = data?.me.savedBooks || []
+    
+    // const [userData, setUserData] = useState(myData);
+  // setUserData(data?.me.savedBooks || {});
    
     console.log("here is the data" + userData)
   // setUserData (userData = data);
@@ -29,26 +36,43 @@ const SavedBooks = () => {
 
 
   const handleDeleteBook = async (bookId) => {
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
 
+    const id = Auth.getProfile();
+    const userId = id.data._id;
+    // get token
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
+    // console.log(myId)
     if (!token) {
       return false;
     }
+    setSavedBookIds([...savedBookIds, bookId]);
+    removeBook({
+      variables: {userId, bookId},
 
-    try {
-      const response = await deleteBook(bookId, token);
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+    });
+    // if (error) return `Submission error! ${error.message}`
+  
+    // const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-      const updatedUser = await response.json();
-      // setUserData(updatedUser);
-      // upon success, remove book's id from localStorage
+    // if (!token) {
+    //   return false;
+    // }
+
+    // try {
+    //   const response = await deleteBook(bookId, token);
+
+    //   if (!response.ok) {
+    //     throw new Error('something went wrong!');
+    //   }
+
+    //   const updatedUser = await response.json();
+    //   // setUserData(updatedUser);
+    //   // upon success, remove book's id from localStorage
       removeBookId(bookId);
-    } catch (err) {
-      console.error(err);
-    }
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
   // if data isn't here yet, say so
