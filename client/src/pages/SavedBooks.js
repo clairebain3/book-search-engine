@@ -11,70 +11,47 @@ import { useRevalidator } from 'react-router-dom';
 
 
 const SavedBooks = () => {
-  const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds);
-  const [removeBook, { err, d }] = useMutation(REMOVE_BOOK);
-  const id = Auth.getProfile();
-  const userId = id.data._id;
-  console.log(userId)
-  useEffect(() => {
-    return () => getSavedBookIds(savedBookIds);
-  });
-  const { loading, error, data } = useQuery(GET_ME,
-    {
-      variables: { userId },
-    });
+
+  const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+  // if (!token) {
+  //   return false;
+  // }
+
+  const [deleteBook ] = useMutation(REMOVE_BOOK);
+  
+  const { loading, error, data } = useQuery(GET_ME);
     const userData = data?.me.savedBooks || []
-    
-    // const [userData, setUserData] = useState(myData);
-  // setUserData(data?.me.savedBooks || {});
-   
-    console.log("here is the data" + userData)
-  // setUserData (userData = data);
-// console.log(userData)
-  // use this to determine if `useEffect()` hook needs to run again
-  // const userDataLength = Object.keys(userData).length;
-
-
+    console.log(userData)
   const handleDeleteBook = async (bookId) => {
 
-    const id = Auth.getProfile();
-    const userId = id.data._id;
+    // const id = Auth.getProfile();
+    // const userId = id.data._id;
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-    // console.log(myId)
+
     if (!token) {
       return false;
     }
-    setSavedBookIds([...savedBookIds, bookId]);
-    removeBook({
-      variables: {userId, bookId},
+    // setSavedBookIds([...savedBookIds, bookId]);
+    // removeBook({
+    //   variables: {userId, bookId},
+
+
+    try{
+    const {data} =  await deleteBook({
+      variables: {bookId},
 
 
     });
-    // if (error) return `Submission error! ${error.message}`
-  
-    // const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-    // if (!token) {
-    //   return false;
-    // }
-
-    // try {
-    //   const response = await deleteBook(bookId, token);
-
-    //   if (!response.ok) {
-    //     throw new Error('something went wrong!');
-    //   }
-
-    //   const updatedUser = await response.json();
-    //   // setUserData(updatedUser);
-    //   // upon success, remove book's id from localStorage
       removeBookId(bookId);
-    // } catch (err) {
-    //   console.error(err);
-    // }
-  };
+    } catch (err) {
+      console.error(err);
+    }
 
+  };
+console.log(userData)
   // if data isn't here yet, say so
 // if data isn't here yet, say so
 if (loading) {

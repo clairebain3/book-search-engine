@@ -16,7 +16,7 @@ import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
 
-  const [saveBook, { error, data }] = useMutation(SAVE_BOOK);
+
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
@@ -63,14 +63,13 @@ const SearchBooks = () => {
       console.error(err);
     }
   };
-
+  const [saveBook, { error }] = useMutation(SAVE_BOOK);
   // create function to handle saving a book to our database
-  const handleSaveBook = (bookId) => {
+  const handleSaveBook = async (bookId) => {
 
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-    const id = Auth.getProfile();
-    const userId = id.data._id;
+   
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
     // console.log(myId)
@@ -78,11 +77,23 @@ const SearchBooks = () => {
       return false;
     }
     setSavedBookIds([...savedBookIds, bookToSave.bookId]);
-    saveBook({
-      variables: {userId, ...bookToSave},
+console.log(bookToSave)
+    try {
+      const { data } = saveBook({
+        variables: {"input": bookToSave },
+      });
+
+      // window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
+;
+    // saveBook({
+    //   variables: { ...bookToSave},
 
 
-    });
+    // });
+    console.log("here are the ids", savedBookIds)
     if (error) return `Submission error! ${error.message}`
   };
 

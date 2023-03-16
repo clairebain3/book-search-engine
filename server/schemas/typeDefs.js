@@ -3,13 +3,12 @@ const typeDefs = `#graphql
     _id: ID
     username: String
     email: String
-    password: String
     bookCount: Int
     savedBooks: [Book]
-
   }
 
   input SaveBookInput {
+    bookId: String
     authors: [String]
     description: String!
     title: String!
@@ -18,7 +17,7 @@ const typeDefs = `#graphql
   }
 
   type Book {
-    bookId: String!
+    bookId: ID!
     authors: [String] 
     description: String!
     title: String!
@@ -32,15 +31,14 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    me(userId: ID!): User
-    allUsers: [User]
+    me: User
   }
 
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
-    saveBook(authors: [String], description: String!, title: String!, image: String!, link: String!, bookId: String!, userId: ID!): User
-    deleteBook(bookId: String!, userId: ID!): User
+    saveBook(input: SaveBookInput!): User
+    deleteBook(bookId: ID!): User
   }
 `;
 

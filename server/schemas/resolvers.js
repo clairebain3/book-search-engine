@@ -6,14 +6,17 @@ const { signToken } = require('../utils/auth');
 const resolvers = {
   Query: {
 
-    me: async (parent, { userId }) => {
-      console.log("findme", userId)
-      const myuser = await User.findById( userId );
-      return myuser
+    me: async (parent, args, context) => {
+      if (context.user){
+
+        const myuser = await User.findById(context.user._id);
+        return myuser
+      }
+      throw new AuthenticationError('No user found with this email address');
     },
-    allUsers: async () => {
-      return User.find({})
-    }
+    // allUsers: async () => {
+    //   return User.find({})
+    // }
   },
 
   Mutation: {
@@ -50,28 +53,36 @@ const resolvers = {
       },
 
 
-    saveBook: async (parent, { authors, description, title, bookId, image, link, userId }) => {
+    saveBook: async (parent, { input }, context) => {
+      if(context.user){
       return User.findOneAndUpdate(
-        { _id: userId },
+        { _id: context.user._id },
         {
-          $addToSet: { savedBooks:  { authors, description, title, bookId, image, link } },
+          $addToSet: { savedBooks:  input},
         },
         {
           new: true,
           runValidators: true,
         }
       );
+    }
+    throw new AuthenticationError('log in please');
     },
-    deleteBook: async (parent, { bookId, userId}) => {
+    deleteBook: async (parent, { bookId}, context) => {
+      if(context.user){
       return User.findOneAndUpdate(
-        { _id: userId },
+        { _id: context.user._id },
         {
           $pull: { savedBooks:  { bookId } },
+        },
+        {
+          new: true,
+          runValidators: true,
         }
         
         );
-    },
-
+    }
+  }
   },
 };
 
