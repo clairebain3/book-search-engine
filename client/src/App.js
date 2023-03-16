@@ -43,7 +43,7 @@ function App() {
             path='/' 
             element={<SearchBooks />} 
           />
-          <Route 
+          <Route forceRefresh={true}
             path='/saved' 
             element={<SavedBooks />} 
           />

@@ -11,7 +11,7 @@ import { useRevalidator } from 'react-router-dom';
 
 
 const SavedBooks = () => {
-
+  // window.location.reload();
   const token = Auth.loggedIn() ? Auth.getToken() : null;
 
   // if (!token) {
@@ -49,7 +49,7 @@ const SavedBooks = () => {
     } catch (err) {
       console.error(err);
     }
-
+      window.location.reload();
   };
 console.log(userData)
   // if data isn't here yet, say so
