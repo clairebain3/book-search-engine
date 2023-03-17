@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://clairebain3:mypassword@cluster0.lv5w54x.mongodb.net/googlebooks.bookUsers?retryWrites=true&w=majority', {
+mongoose.connect(process.env.MONGODB_URI, {
   // process.env.MONGODB_URI ||   
+  // 'mongodb+srv://clairebain3:mypassword@cluster0.lv5w54x.mongodb.net/googlebook?retryWrites=true&w=majority'
 useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
