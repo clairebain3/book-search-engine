@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://clairebain3:mypassword@cluster0.lv5w54x.mongodb.net/?retryWrites=true&w=majority', {
-  useNewUrlParser: true,
+mongoose.connect('mongodb+srv://clairebain3:mypassword@cluster0.lv5w54x.mongodb.net/?retryWrites=true&w=majority', {
+  // process.env.MONGODB_URI ||   
+useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
   useFindAndModify: false,
